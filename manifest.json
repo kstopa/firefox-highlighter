@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "Simple Highlighter",
+    "description": "Tool for highlight web pages content and export it to markdown file.",
+    "version": "0.1",
+    "homepage_url": "https://github.com/kstopa/firefox-highlighter",
+    "icons": {
+        "48": "icons/icons8-marker-pen.png"
+    },
+    "permissions": [
+        "notifications",
+        "storage"
+    ],
+    "background": {
+      "scripts": ["background-script.js"]
+    },
+    
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content-script.js"]
+      }
+    ],
+
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "highlighter@opendev.consulting"
+      }
+    }
+  }
