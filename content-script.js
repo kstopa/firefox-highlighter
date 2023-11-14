@@ -4,23 +4,24 @@
 
 //var turndownService = new TurndownService();
 
-// TODO enable to tune the color
-// TODO convert to Markdown
-// if header add # else just paragraph
-// TODO save to a file
-// TODO add support to store images
-// TODO add support to store tables
-// TODO enable to unmark already highlighted text.
-
-
-const highlight = `<span style="background: #ffcd40; border-radius:3px">`;
+const highlight = `<highlight class="addon-highlighted-content" style="background: #ffcd40; border-radius:3px">`;
 
 function notifyExtension(e) {
     // highlight the selected element
+    // console.log(window.getSelection())
+    // if (window.getSelection().rangeCount > 0) {
+    //     while (window.getSelection().rangeCount
+    // }
+    // for (let nr = 0;  nr < window.getSelection().rangeCount; nr++) {
+    //     console.log(window.getSelection().getRangeAt(nr));
+    // }
     var selectedText = window.getSelection().toString();
     if (selectedText) {
-        e.target.innerHTML = e.target.innerHTML.replace(selectedText, highlight + selectedText + '</span>');
-        browser.runtime.sendMessage({'markdown': selectedText});
+        e.target.innerHTML = e.target.innerHTML.replace(selectedText, highlight + selectedText + '</highlight>');
+        browser.runtime.sendMessage({
+            'title': document.title,
+            'markdown': selectedText
+        });
     }
 };
 

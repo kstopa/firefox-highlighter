@@ -8,7 +8,7 @@
         "48": "icons/icons8-marker-pen.png"
     },
     "permissions": [
-        "notifications",
+        "tabs",
         "storage"
     ],
     "background": {
@@ -21,6 +21,14 @@
         "js": ["content-script.js"]
       }
     ],
+
+    "browser_action": {
+      "default_icon": {
+       "32" : "icons/icons8-marker-pen-save.png"
+      },
+      "default_title": "Save highlighted content",
+      "default_popup": "popup/save-highlighted.html"
+    },
 
     "browser_specific_settings": {
       "gecko": {
