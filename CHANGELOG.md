@@ -1,3 +1,7 @@
+# 0.3
+
+* Added clear button
+
 # 0.2
 
 * Browser local storage of highlighted texts.

@@ -29,14 +29,20 @@ function renderMarkdown(content, activeTab) {
     document.getElementById("highlightedContentArea").value = `# ${activeTab.title} \n\n${content}\n\nSource: ${activeTab.url}`;
 }
 
+function clearText() {
+  const highlightedContent = '';
+  document.getElementById('highlightedContentArea').value = highlightedContent;
+  browser.storage.local.set({highlightedContent});
+}
+
 browser.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var activeTab = tabs[0];
     //document.getElementById('url').textContent = activeTab.url;
     // document.getElementById("title").value = activeTab.title;
-    // Get data from storage and render on form
     const content = browser.storage.local.get('highlightedContent', (content) => {
         renderMarkdown(content.highlightedContent, activeTab);
     });
 });
 
 document.getElementById('save').addEventListener('click', saveTextAsFile);
+document.getElementById('clear').addEventListener('click', clearText);
