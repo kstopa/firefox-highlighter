@@ -6,18 +6,60 @@
 
 const highlight = `<highlight class="addon-highlighted-content" style="background: #ffcd40; border-radius:3px">`;
 
+function createHighlightedElement() {
+   const highlight = document.createElement('highlight');
+   highlight.style.background = '#ffcd40';
+   highlight.style.borderRadius = '3px';
+   return highlight;
+}
+
+/* Get markdown text from selected text */
+function processSelection(selection) {
+
+// Iterate through all ranges in the
+  for (let i = 0; i < selection.rangeCount; i++) {
+    const range = selection.getRangeAt(i);
+    const fragment = range.cloneContents();
+    const elHighlighted = createHighlightedElement();
+    elHighlighted.appendChild(fragment);
+    
+    // Create a TreeWalker to iterate through nodes in this range
+    const treeWalker = document.createTreeWalker(
+        //range.commonAncestorContainer,
+        elHighlighted,
+        NodeFilter.SHOW_ALL, // or use a more specific filter
+        {
+            acceptNode: function(node) {
+                // Only consider nodes that are within the range
+                if (range.intersectsNode(node)) {
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+                return NodeFilter.FILTER_REJECT;
+            }
+        }
+    );
+
+    let currentNode = treeWalker.currentNode;
+    while(currentNode) {
+        // TODO Process node and convert to markdown
+        console.log(currentNode);
+        // Move to the next node
+        currentNode = treeWalker.nextNode();
+    }
+
+     // replace in dom with styled highlight
+     range.deleteContents();
+     range.insertNode(elHighlighted);
+
+  }
+  // TODO return processed markdown
+  return selection.toString(); 
+ }
+
 function notifyExtension(e) {
-    // highlight the selected element
-    // console.log(window.getSelection())
-    // if (window.getSelection().rangeCount > 0) {
-    //     while (window.getSelection().rangeCount
-    // }
-    // for (let nr = 0;  nr < window.getSelection().rangeCount; nr++) {
-    //     console.log(window.getSelection().getRangeAt(nr));
-    // }
+    var selectedText = processSelection(window.getSelection());
     var selectedText = window.getSelection().toString();
     if (selectedText) {
-        e.target.innerHTML = e.target.innerHTML.replace(selectedText, highlight + selectedText + '</highlight>');
         browser.runtime.sendMessage({
             'title': document.title,
             'markdown': selectedText
