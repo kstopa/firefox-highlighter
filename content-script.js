@@ -13,38 +13,56 @@ function createHighlightedElement() {
    return highlight;
 }
 
+function capitalizeFirstLetter(text) {
+    // Find the first letter in the text
+    text = text.trim();
+    const firstLetterMatch = text.match(/[a-zA-Z]/);
+    if (!firstLetterMatch) {
+        // No letters in the text
+        return text;
+    }
+    // Extract the index of the first letter
+    const firstLetterIndex = firstLetterMatch.index;
+    // Capitalize the first letter
+    const firstLetterCapitalized = text[firstLetterIndex].toUpperCase();
+    // Reconstruct the string
+    return text.substring(0, firstLetterIndex) + firstLetterCapitalized + text.substring(firstLetterIndex + 1);
+}
+
+/* Convert html to markdown */
+function htmlToMarkdown(element) {
+   let markdown = '';
+   if (element.nodeType === 3) {
+      markdown = element.nodeValue;
+   } else if (element.tagName === 'A') {
+      markdown = '[' + element.innerText + '](' + element.href + ')';
+   } else if (element.tagName === 'STRONG') {
+      markdown = '**' + element.innerText + '**';
+   } else if (element.tagName === 'I') {
+      markdown = '*' + element.innerText + '*';
+   } else {
+     // TODO
+     console.warn(element.tagName + ' not supported yet.');
+     markdown += element.innerText;
+   }
+   return markdown;
+}
+
 /* Get markdown text from selected text */
 function processSelection(selection) {
-
-// Iterate through all ranges in the
+  let markdown = "";
+  // Iterate through all ranges in the
   for (let i = 0; i < selection.rangeCount; i++) {
     const range = selection.getRangeAt(i);
     const fragment = range.cloneContents();
     const elHighlighted = createHighlightedElement();
     elHighlighted.appendChild(fragment);
-    
-    // Create a TreeWalker to iterate through nodes in this range
-    const treeWalker = document.createTreeWalker(
-        //range.commonAncestorContainer,
-        elHighlighted,
-        NodeFilter.SHOW_ALL, // or use a more specific filter
-        {
-            acceptNode: function(node) {
-                // Only consider nodes that are within the range
-                if (range.intersectsNode(node)) {
-                    return NodeFilter.FILTER_ACCEPT;
-                }
-                return NodeFilter.FILTER_REJECT;
-            }
-        }
-    );
 
-    let currentNode = treeWalker.currentNode;
+    let currentNode = elHighlighted.firstChild; //treeWalker.currentNode;
     while(currentNode) {
-        // TODO Process node and convert to markdown
-        console.log(currentNode);
-        // Move to the next node
-        currentNode = treeWalker.nextNode();
+       // Move to the next node
+       markdown += htmlToMarkdown(currentNode);
+       currentNode = currentNode.nextSibling;
     }
 
      // replace in dom with styled highlight
@@ -52,13 +70,16 @@ function processSelection(selection) {
      range.insertNode(elHighlighted);
 
   }
-  // TODO return processed markdown
-  return selection.toString(); 
- }
+  // Format as a sentence. 
+  markdown = capitalizeFirstLetter(markdown);
+  if (markdown && (!markdown.endsWith('.') || !markdown.endsWith(',') || !markdown.endsWith(';'))) {
+    markdown += '.';
+  }
+  return markdown;
+};
 
 function notifyExtension(e) {
     var selectedText = processSelection(window.getSelection());
-    var selectedText = window.getSelection().toString();
     if (selectedText) {
         browser.runtime.sendMessage({
             'title': document.title,

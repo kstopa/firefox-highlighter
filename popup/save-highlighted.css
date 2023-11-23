@@ -17,25 +17,18 @@ body {
 /* Styling the textarea */
 textarea {
   width: 100%; /* Full width */
-  height: 490px;
+  height: 480px;
   padding: 12px 20px;
-  margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid #211F1E;
   border-radius: 4px;
   box-sizing: border-box;
   resize: vertical; /* Allow vertical resizing */
   font-size: 10px;
+  margin-bottom: 10px;
 }
 
-/* Styling labels */
-label {
-  margin-bottom: 8px;
-  display: block;
-  font-weight: bold;
-}
-
-/* CSS */
+/* popup buttons */
 button {
   font-size: 16px;
   font-weight: 200;
