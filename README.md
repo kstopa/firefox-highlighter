@@ -13,9 +13,13 @@ npm install -g web-ext
 web-ext run
 ```
 
+## Build
+
+```
+web-ext build
+```
+
 ## License
 
 GPL v3
-
-Icons get from icons 8.
 

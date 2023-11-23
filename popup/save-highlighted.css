@@ -25,7 +25,6 @@ textarea {
   box-sizing: border-box;
   resize: vertical; /* Allow vertical resizing */
   font-size: 10px;
-  margin-bottom: 10px;
 }
 
 /* popup buttons */
@@ -41,6 +40,7 @@ button {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  background-color: #fff;
 }
 
 button:after {
@@ -59,13 +59,8 @@ button span {
   top: -10px;
 }
 
-/**
-.button-52:hover:after {
-  top: 0px;
-  left: 0px;
-}*/
-
 .centerd-container {
+  padding-top: 5px;
   text-align: center;
   width: 100%;
 }

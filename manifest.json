@@ -2,10 +2,12 @@
     "manifest_version": 2,
     "name": "Simple Highlighter",
     "description": "Tool for highlight web pages content and export it to markdown file.",
-    "version": "0.3",
+    "version": "0.4",
     "homepage_url": "https://github.com/kstopa/firefox-highlighter",
     "icons": {
-        "48": "icons/icons8-marker-pen.png"
+        "48": "icons/highlighter-logo-48.png",
+        "96": "icons/highlighter-logo-96.png",
+        "128": "icons/highlighter-logo-128.png"
     },
     "permissions": [
         "tabs",
@@ -24,7 +26,7 @@
 
     "browser_action": {
       "default_icon": {
-       "32" : "icons/icons8-marker-pen-save.png"
+       "48" : "icons/highlighter-logo-48.png"
       },
       "default_title": "Save highlighted content",
       "default_popup": "popup/save-highlighted.html"
