@@ -26,7 +26,8 @@
 
     "browser_action": {
       "default_icon": {
-       "48" : "icons/highlighter-logo-48.png"
+       "48" : "icons/highlighter-logo-action-48.png",
+       "96": "icons/highlighter-logo-96.png"
       },
       "default_title": "Save highlighted content",
       "default_popup": "popup/save-highlighted.html"
