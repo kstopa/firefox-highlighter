@@ -30,6 +30,7 @@ function renderMarkdown(content, activeTab) {
 }
 
 function clearText() {
+  console.log("CLEAR");
   const highlightedContent = '';
   document.getElementById('highlightedContentArea').value = highlightedContent;
   browser.storage.local.set({highlightedContent});
@@ -44,5 +45,19 @@ browser.tabs.query({active: true, currentWindow: true}, function(tabs) {
     });
 });
 
+function toggleDropdown() {
+    console.log("LOL");
+    document.getElementById('styleSelect').classList.toggle('show');
+    document.getElementById('highlightedContentArea').value('Toogling select');
+    console.log("TOOGLE");
+}
+
+function selectOption(color, text) {
+    document.querySelector('.dropdown .selected').textContent = text;
+    toggleDropdown();
+}
+
 document.getElementById('save').addEventListener('click', saveTextAsFile);
 document.getElementById('clear').addEventListener('click', clearText);
+document.getElementById('styleSelect').addEventListener('click', toggleDropdown);
+
