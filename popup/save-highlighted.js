@@ -30,7 +30,6 @@ function renderMarkdown(content, activeTab) {
 }
 
 function clearText() {
-  console.log("CLEAR");
   const highlightedContent = '';
   document.getElementById('highlightedContentArea').value = highlightedContent;
   browser.storage.local.set({highlightedContent});
@@ -38,26 +37,33 @@ function clearText() {
 
 browser.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var activeTab = tabs[0];
-    //document.getElementById('url').textContent = activeTab.url;
-    // document.getElementById("title").value = activeTab.title;
     const content = browser.storage.local.get('highlightedContent', (content) => {
         renderMarkdown(content.highlightedContent, activeTab);
     });
 });
 
 function toggleDropdown() {
-    console.log("LOL");
     document.getElementById('styleSelect').classList.toggle('show');
-    document.getElementById('highlightedContentArea').value('Toogling select');
-    console.log("TOOGLE");
 }
 
-function selectOption(color, text) {
-    document.querySelector('.dropdown .selected').textContent = text;
-    toggleDropdown();
+function selectOption(optionClass, optionHtml) {
+    document.getElementById('selectedColor').className = 'dot ' + optionClass;
+    document.getElementById('selectedOption').innerHTML = optionHtml;
+    // TODO store selected option in store
 }
 
 document.getElementById('save').addEventListener('click', saveTextAsFile);
 document.getElementById('clear').addEventListener('click', clearText);
 document.getElementById('styleSelect').addEventListener('click', toggleDropdown);
-
+document.getElementById('optionDefault').addEventListener('click', function(){
+    selectOption('yellow-dot', 'Default');
+});
+document.getElementById('optionBold').addEventListener('click', function(){
+    selectOption('blue-dot', '<strong>Bold</strong>');
+});
+document.getElementById('optionItalic').addEventListener('click', function(){
+    selectOption('green-dot', '<i>Italic</i>');
+});
+document.getElementById('optionStrike').addEventListener('click', function(){
+    selectOption('red-dot', '<del>Strike</del>');
+});

@@ -2,7 +2,6 @@ html {
     font-family: sans-serif;
     font-size: 12px;
     background: rgb(240,240,240);
-    height: 600px;
     margin: 0;
 }
 
@@ -11,13 +10,13 @@ body {
   background: rgb(240,240,240);
   margin: 0 auto;
   padding: 2px;
-  height: inherit;
+  height: 600px;
 }
 
 /* Styling the textarea */
 textarea {
   width: 100%; /* Full width */
-  height: 480px;
+  height: 450px;
   padding: 12px 20px;
   display: inline-block;
   border: 1px solid #211F1E;
@@ -67,9 +66,19 @@ button span {
 
 /* Hightlight style select */
 /* Dropdown Styles */
+
+.toolbar {
+  padding-top: 5px;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically center the items */
+  gap: 10px; 
+}
+
 .dropdown {
-    position: relative;
-    width: 200px;
+  position: relative;
+  width: 200px;
+  cursor: pointer;
+  background-color: #fff;
 }
 
 .select-box {
@@ -108,16 +117,16 @@ button span {
     margin-right: 10px;
 }
 
-.yellow-dot { background-color: yellow; }
-.blue-dot { background-color: blue; }
-.green-dot { background-color: green; }
-.red-dot { background-color: red; }
+.yellow-dot { background-color: rgb(255, 226, 63); }
+.blue-dot { background-color: rgb(0, 177, 253); }
+.green-dot { background-color: rgb(113, 206, 69); }
+.red-dot { background-color: rgb(255, 100, 100); }
 
 .arrow {
     position: absolute;
     right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 12px;
+    transform: translateY(-40%);
     border: solid black;
     border-width: 0 2px 2px 0;
     display: inline-block;

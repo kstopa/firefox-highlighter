@@ -8,32 +8,36 @@
 <body>
   <div class="outer-wrapper">
     <div class="toolbar">
+      <label><strong>Highlight style</strong></label>
       <div class="dropdown">
         <div id="styleSelect" class="select-box">
-          <span class="selected dot yellow-dot">Default</span>
+          <div id="selectedColor" class="dot yellow-dot">
+          <span id="selectedOption" style="margin-left:20px">Default</span></div>
           <div class="arrow"></div>
           <!-- Options -->
           <div class="options-container">
-          <div class="option" onclick="selectOption('yellow', 'Default')">
-            <div class="dot yellow-dot"></div>
-            <span>Default</span>
-          </div>
-          <div class="option" onclick="selectOption('blue', 'Bold')">
-            <div class="dot blue-dot"></div>
-            <span>Bold</span>
-          </div>
-          <div class="option" onclick="selectOption('green', 'Italic')">
-            <div class="dot green-dot"></div>
-            <span>Italic</span>
-          </div>
-          <div class="option" onclick="selectOption('red', 'Strike')">
-             <div class="dot red-dot"></div>
-             <span>Strike</span>
+            <div id="optionDefault" class="option">
+              <div class="dot yellow-dot"></div>
+              <span>Default</span>
+            </div>
+            <div id="optionBold" class="option">
+              <div class="dot blue-dot"></div>
+              <span><strong>Bold</strong></span>
+            </div>
+            <div id="optionItalic" class="option">
+              <div class="dot green-dot"></div>
+              <span><i>Italic</i></span>
+            </div>
+            <div id="optionStrike" class="option">
+              <div class="dot red-dot"></div>
+              <span><del>Strike</del></span>
+            </div>
           </div>
         </div>
-      </div>     
+      </div> 
     </div>
-    <div class="centerd-container">
+    <!-- content  -->
+    <div>
       <p><strong>Highlighted content</strong></p>
     </div>
     <div>
@@ -63,8 +67,6 @@
         </button>
     </div> 
   </div>
-
   <script src="save-highlighted.js"></script>
 </body>
-
 </html>
