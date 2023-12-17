@@ -105,7 +105,13 @@ function styleSelection(selection, optionClass) {
 /* Get markdown text from selected text */
 function processSelection(selection) {
   browser.storage.local.get('highlightOptions').then(
-    (options) => styleSelection(selection, options.highlightOptions['optionClass']),
+    (options) => {
+      if (options.hasOwnProperty('highlightOptions')) {
+        styleSelection(selection, options.highlightOptions['optionClass'])
+      } else {
+        styleSelection(selection, 'yellow-dot')
+      }
+    },
     (error) => styleSelection(selection, 'yellow-dot')
   );
 };

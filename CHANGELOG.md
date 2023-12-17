@@ -5,6 +5,7 @@
 
 # 0.4
 
+* Export links, bold and italic to markdown.
 * Bug fixes.
 
 # 0.3
