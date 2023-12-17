@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Simple Highlighter",
     "description": "Tool for highlight web pages content and export it to markdown file.",
-    "version": "0.4",
+    "version": "0.5",
     "homepage_url": "https://github.com/kstopa/firefox-highlighter",
     "icons": {
         "48": "icons/highlighter-logo-48.png",

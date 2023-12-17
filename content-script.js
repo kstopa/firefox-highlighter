@@ -1,16 +1,24 @@
- // Import the Turndown library to convert HTML to Markdown
-// You can add this library to your extension by downloading it and including it in your manifest.json file
-//var TurndownService = require('turndown');
 
-//var turndownService = new TurndownService();
-
-const highlight = `<highlight class="addon-highlighted-content" style="background: #ffcd40; border-radius:3px">`;
-
-function createHighlightedElement() {
-   const highlight = document.createElement('highlight');
-   highlight.style.background = '#ffcd40';
-   highlight.style.borderRadius = '3px';
-   return highlight;
+function buildHighlightedElement(optionClass) {
+  const highlight = document.createElement('highlight');
+  highlight.style.borderRadius = '3px';
+  switch (optionClass) {
+    case 'blue-dot':
+      highlight.style.background = '#70CEF6';
+      highlight.style.fontWeight = 'bold';
+      break;
+    case 'green-dot':
+      highlight.style.background = '#92DB70';
+      highlight.style.fontStyle = 'italic';
+      break;
+    case 'red-dot':
+      highlight.style.background = '#FC7C7C';
+      highlight.style.textDecoration = 'line-through';
+      break;
+    default:
+      highlight.style.background = '#FFE23F';
+  }
+  return highlight;
 }
 
 function capitalizeFirstLetter(text) {
@@ -30,16 +38,27 @@ function capitalizeFirstLetter(text) {
 }
 
 /* Convert html to markdown */
-function htmlToMarkdown(element) {
+function htmlToMarkdown(element, optionClass) {
    let markdown = '';
    if (element.nodeType === 3) {
-      markdown = element.nodeValue;
+      markdown = element.nodeValue.trim();
+      switch (optionClass) {
+        case 'blue-dot':
+          markdown = ' **' + markdown + '** ';
+          break;
+        case 'green-dot':
+          markdown = ' *' + markdown + '* ';
+          break;
+        case 'red-dot':
+          markdown = ' ~~' + markdown + '~~ ';
+          break;
+      }
    } else if (element.tagName === 'A') {
-      markdown = '[' + element.innerText + '](' + element.href + ')';
-   } else if (element.tagName === 'STRONG') {
-      markdown = '**' + element.innerText + '**';
-   } else if (element.tagName === 'I') {
-      markdown = '*' + element.innerText + '*';
+      markdown = ' [' + element.innerText + '](' + element.href + ') ';
+   } else if ((element.tagName === 'STRONG') || (optionClass === 'blue-dot')) {
+      markdown = ' **' + element.innerText.trim() + '** ';
+   } else if ((element.tagName === 'I') || (optionClass === 'green-dot')) {
+      markdown = ' *' + element.innerText.trim() + '* ';
    } else {
      // TODO
      console.warn(element.tagName + ' not supported yet.');
@@ -48,44 +67,51 @@ function htmlToMarkdown(element) {
    return markdown;
 }
 
-/* Get markdown text from selected text */
-function processSelection(selection) {
+function styleSelection(selection, optionClass) {
   let markdown = "";
   // Iterate through all ranges in the
   for (let i = 0; i < selection.rangeCount; i++) {
     const range = selection.getRangeAt(i);
     const fragment = range.cloneContents();
-    const elHighlighted = createHighlightedElement();
+    const elHighlighted = buildHighlightedElement(optionClass);
     elHighlighted.appendChild(fragment);
 
     let currentNode = elHighlighted.firstChild; //treeWalker.currentNode;
     while(currentNode) {
-       // Move to the next node
-       markdown += htmlToMarkdown(currentNode);
-       currentNode = currentNode.nextSibling;
+      // Move to the next node
+      markdown += htmlToMarkdown(currentNode, optionClass);
+      currentNode = currentNode.nextSibling;
     }
 
-     // replace in dom with styled highlight
-     range.deleteContents();
-     range.insertNode(elHighlighted);
+    // replace in dom with styled highlight
+    range.deleteContents();
+    range.insertNode(elHighlighted);
 
   }
   // Format as a sentence. 
-  markdown = capitalizeFirstLetter(markdown);
+  markdown = capitalizeFirstLetter(markdown.trim());
   if (markdown && (!markdown.endsWith('.') || !markdown.endsWith(',') || !markdown.endsWith(';'))) {
     markdown += '.';
   }
-  return markdown;
+  // Store markdown in the browser store
+  if (markdown) {
+    browser.runtime.sendMessage({
+        'title': document.title,
+        'markdown': markdown
+    });
+  }
+}
+
+/* Get markdown text from selected text */
+function processSelection(selection) {
+  browser.storage.local.get('highlightOptions').then(
+    (options) => styleSelection(selection, options.highlightOptions['optionClass']),
+    (error) => styleSelection(selection, 'yellow-dot')
+  );
 };
 
 function notifyExtension(e) {
-    var selectedText = processSelection(window.getSelection());
-    if (selectedText) {
-        browser.runtime.sendMessage({
-            'title': document.title,
-            'markdown': selectedText
-        });
-    }
+    processSelection(window.getSelection());
 };
 
 window.addEventListener("mouseup", notifyExtension);

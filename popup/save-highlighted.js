@@ -26,7 +26,7 @@ function destroyClickedElement(event) {
 
 
 function renderMarkdown(content, activeTab) {
-    document.getElementById("highlightedContentArea").value = `# ${activeTab.title} \n\n${content}\n\nSource: ${activeTab.url}`;
+   document.getElementById("highlightedContentArea").value = `# ${activeTab.title} \n\n${content}\n\nSource: ${activeTab.url}`;
 }
 
 function clearText() {
@@ -47,9 +47,17 @@ function toggleDropdown() {
 }
 
 function selectOption(optionClass, optionHtml) {
+  if (optionClass && optionHtml) {
     document.getElementById('selectedColor').className = 'dot ' + optionClass;
     document.getElementById('selectedOption').innerHTML = optionHtml;
     // TODO store selected option in store
+    //
+    let highlightOptions = {
+      optionClass: optionClass,
+      optionHtml: optionHtml
+    }
+    browser.storage.local.set({highlightOptions});
+  }
 }
 
 document.getElementById('save').addEventListener('click', saveTextAsFile);
@@ -67,3 +75,8 @@ document.getElementById('optionItalic').addEventListener('click', function(){
 document.getElementById('optionStrike').addEventListener('click', function(){
     selectOption('red-dot', '<del>Strike</del>');
 });
+// Set last selected option on highlight style dropdown
+browser.storage.local.get('highlightOptions').then(
+  (options) => selectOption(options.highlightOptions['optionClass'], options.highlightOptions['optionHtml']),
+  (err) => selectOption('yellow-dot', 'Default') 
+);

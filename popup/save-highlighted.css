@@ -106,7 +106,8 @@ button span {
     align-items: center;
 }
 
-.option:not(:last-child) {
+.option:not(:last-child) t diff
+{
     border-bottom: 1px solid #ccc;
 }
 
@@ -117,10 +118,10 @@ button span {
     margin-right: 10px;
 }
 
-.yellow-dot { background-color: rgb(255, 226, 63); }
-.blue-dot { background-color: rgb(0, 177, 253); }
-.green-dot { background-color: rgb(113, 206, 69); }
-.red-dot { background-color: rgb(255, 100, 100); }
+.yellow-dot { background-color: #FFE23F; }
+.blue-dot { background-color: #70CEF6; }
+.green-dot { background-color: #92DB70; }
+.red-dot { background-color: #FC7C7C; }
 
 .arrow {
     position: absolute;

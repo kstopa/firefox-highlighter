@@ -1,3 +1,12 @@
+# 0.5
+
+* Enable to set highlight style and color
+* Store user settings
+
+# 0.4
+
+* Bug fixes.
+
 # 0.3
 
 * Added clear button
